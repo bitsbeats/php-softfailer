@@ -57,7 +57,7 @@ class SoftFailer {
 
         $failCnt = $this->storageData->getFailCount();
         if ($failCnt >= $this->hardFailLimit) {
-            throw new HardFailLimitReachedException('hard fail limit reached');
+            throw new HardFailLimitReachedException($this->hardFailLimit);
         }
     }
 
