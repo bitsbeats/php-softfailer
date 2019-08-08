@@ -1,0 +1,22 @@
+{
+  "name": "bitsbeats/softfailer",
+  "type": "library",
+  "description": "allow independent runs/instances to fail only after reaching a certain error threshold",
+  "require": {
+    "php": ">=7.2",
+    "ext-json": "*",
+    "symfony/yaml": "^4.3"
+  },
+  "authors": [
+    {
+      "name": "Stefan Stammler",
+      "email": "sst@bitsbeats.com"
+    }
+  ],
+  "minimum-stability": "stable",
+  "autoload": {
+    "psr-4": {
+      "SoftFailer\\": "src/lib/"
+    }
+  }
+}
