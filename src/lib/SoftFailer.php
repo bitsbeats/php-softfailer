@@ -6,6 +6,7 @@ use Exception;
 use DateTimeImmutable;
 use DateTimeInterface;
 use SoftFailer\Exception\HardFailLimitReachedException;
+use SoftFailer\Exception\LockWaitTimeoutException;
 use SoftFailer\Storage\Storage;
 
 class SoftFailer {
@@ -39,6 +40,7 @@ class SoftFailer {
     /**
      * @param DateTimeInterface|null $time
      *
+     * @throws LockWaitTimeoutException
      * @throws HardFailLimitReachedException
      * @throws Exception
      */
@@ -64,7 +66,7 @@ class SoftFailer {
     }
 
     /**
-     *
+     * @throws Exception
      */
     public function clearFailPoints(): void {
         $this->storageData = new StorageData();
