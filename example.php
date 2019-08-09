@@ -8,7 +8,7 @@ use SoftFailer\Exception\HardFailLimitReachedException;
 use SoftFailer\Exception\LockWaitTimeoutException;
 
 
-$storage = new Filesystem('/tmp/softfail.txt', '/tmp/softfail.lock', 500);
+$storage = new Filesystem('/tmp/softfail.txt', 500);
 
 try {
     // hard fail if 3 or more "soft fails" occur within a 3600 second time window

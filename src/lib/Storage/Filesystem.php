@@ -26,12 +26,11 @@ class Filesystem implements Storage {
      * File constructor.
      *
      * @param string $filename
-     * @param string $lockFilename
      * @param int    $timeoutMS
      */
-    public function __construct(string $filename, string $lockFilename, int $timeoutMS) {
+    public function __construct(string $filename, int $timeoutMS) {
         $this->filename = $filename;
-        $this->lockFilename = $lockFilename;
+        $this->lockFilename = $filename . '.lock';
         $this->timeoutMS = $timeoutMS;
     }
 
@@ -116,13 +115,16 @@ class Filesystem implements Storage {
 
     /**
      *
+     * @throws Exception
      */
     public function unlock(): void {
         if (is_null($this->lockFilehandle)) {
             return;
         }
 
-        flock($this->lockFilehandle, LOCK_UN);
+        if (!flock($this->lockFilehandle, LOCK_UN)) {
+            throw new Exception("can't release lock: {$this->lockFilehandle}");
+        }
         fclose($this->lockFilehandle);
         $this->lockFilehandle = null;
     }

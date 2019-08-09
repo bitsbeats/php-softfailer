@@ -18,7 +18,7 @@ $> composer require bitsbeats/softfailer
 ## Usage
 
 ```php
-$storage = new Filesystem('/tmp/softfail.txt');
+$storage = new Filesystem('/tmp/softfail.txt', 500);
 
 // hard fail if 3 or more "soft fails" occur within a 3600 second time window
 $sf = new SoftFailer($storage, 3, 3600);
