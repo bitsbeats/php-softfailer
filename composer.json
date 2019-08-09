@@ -5,7 +5,8 @@
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
-    "symfony/yaml": "^4.3"
+    "symfony/yaml": "^4.3",
+    "ramsey/uuid": "^3.8"
   },
   "authors": [
     {

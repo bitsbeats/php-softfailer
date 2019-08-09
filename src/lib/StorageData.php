@@ -6,6 +6,7 @@ use DateTimeImmutable;
 use Exception;
 use DateTime;
 use DateTimeInterface;
+use Ramsey\Uuid\Uuid;
 
 class StorageData {
     /** @var array */
@@ -18,9 +19,20 @@ class StorageData {
 
     /**
      * @param DateTimeInterface $time
+     * @param string            $ident
+     * @throws Exception
      */
-    public function addFailPoint(DateTimeInterface $time): void {
-        $this->failPoints[] = $time;
+    public function addFailPoint(DateTimeInterface $time, string $ident = ''): void {
+        if (!$ident) {
+            $ident = Uuid::uuid4()->toString();
+        }
+
+        // ignore existing idents
+        if (array_key_exists($ident, $this->failPoints)) {
+            return;
+        }
+
+        $this->failPoints[$ident] = $time;
     }
 
     /**
@@ -29,8 +41,8 @@ class StorageData {
      */
     public function toStrings(string $timeFormat = DateTime::RFC3339_EXTENDED): array {
         $strings = [];
-        foreach($this->failPoints as $failPoint) {
-            $strings[] = $failPoint->format($timeFormat);
+        foreach($this->failPoints as $ident => $failPoint) {
+            $strings[$ident] = $failPoint->format($timeFormat);
         }
         return $strings;
     }
@@ -41,10 +53,9 @@ class StorageData {
      * @throws Exception
      */
     public function addFromStrings(array $strings): void {
-        // TODO: check for duplicates
-        foreach($strings as $string) {
+        foreach($strings as $ident => $string) {
             $dt = new DateTimeImmutable($string);
-            $this->addFailPoint($dt);
+            $this->addFailPoint($dt, $ident);
         }
     }
 
@@ -62,9 +73,9 @@ class StorageData {
      */
     public function expire(int $expireSeconds): void {
         $expireTime = (new DateTime('now'))->modify('-' . $expireSeconds . 'seconds');
-        foreach($this->failPoints as $idx => $time) {
+        foreach($this->failPoints as $ident => $time) {
             if ($time < $expireTime) {
-                unset($this->failPoints[$idx]);
+                unset($this->failPoints[$ident]);
             }
         }
     }
