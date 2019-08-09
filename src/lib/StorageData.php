@@ -68,6 +68,13 @@ class StorageData {
     }
 
     /**
+     * @return array
+     */
+    public function getFailPoints(): array {
+        return $this->failPoints;
+    }
+
+    /**
      * @param int $expireSeconds
      * @throws Exception
      */
