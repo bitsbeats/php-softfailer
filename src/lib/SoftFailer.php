@@ -34,10 +34,6 @@ class SoftFailer {
         $this->storage = $storage;
         $this->hardFailLimit = $hardFailLimit;
         $this->intervalSeconds = $intervalSeconds;
-
-        $this->storageData = new StorageData();
-        $storage->load($this->storageData);
-        $this->storageData->expire($intervalSeconds);
     }
 
     /**
@@ -50,10 +46,16 @@ class SoftFailer {
         if (is_null($time)) {
             $time = new DateTimeImmutable('now');
         }
+
+        $this->storageData = new StorageData();
+        $this->storage->lock();
+        $this->storage->load($this->storageData);
+
         $this->storageData->addFailPoint($time);
         $this->storageData->expire($this->intervalSeconds);
 
         $this->storage->save($this->storageData);
+        $this->storage->unlock();
 
         $failCnt = $this->storageData->getFailCount();
         if ($failCnt >= $this->hardFailLimit) {
@@ -65,7 +67,13 @@ class SoftFailer {
      *
      */
     public function clearFailPoints(): void {
+        $this->storageData = new StorageData();
+        $this->storage->lock();
+        $this->storage->load($this->storageData);
+
         $this->storageData->clear();
+
         $this->storage->save($this->storageData);
+        $this->storage->unlock();
     }
 }

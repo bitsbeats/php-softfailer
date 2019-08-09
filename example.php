@@ -6,7 +6,8 @@ use SoftFailer\SoftFailer;
 use SoftFailer\Storage\Filesystem;
 use SoftFailer\Exception\HardFailLimitReachedException;
 
-$storage = new Filesystem(sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'softfail.txt');
+
+$storage = new Filesystem('/tmp/softfail.txt', '/tmp/softfail.lock', 500);
 
 try {
     // hard fail if 3 or more "soft fails" occur within a 3600 second time window
