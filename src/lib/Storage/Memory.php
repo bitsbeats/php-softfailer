@@ -5,6 +5,9 @@ namespace SoftFailer\Storage;
 use Exception;
 use SoftFailer\StorageData;
 
+/**
+ * Dummy storage driver (for testing only)
+ */
 class Memory implements Storage {
     /**
      * @var array
