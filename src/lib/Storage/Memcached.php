@@ -40,6 +40,13 @@ class Memcached implements Storage {
     }
 
     /**
+     * @throws Exception
+     */
+    public function __destruct () {
+        $this->unlock();
+    }
+
+    /**
      * @param int $sleepTimeMS
      *
      * @return Memcached
@@ -101,9 +108,12 @@ class Memcached implements Storage {
      * @throws Exception
      */
     public function lock(): void {
+        // set TTL to twice the length of the wait timeout to avoid permanent locking in case of unexcpected aborts
+        $lockTTLSeconds = ceil($this->timeoutMS / 500);
+
         $timeStart = microtime(true);
         do {
-            $result = $this->memcached->add($this->lockKey, $this->key);
+            $result = $this->memcached->add($this->lockKey, $this->key, $lockTTLSeconds);
             if ($result === true) {
                 $this->locked = true;
                 return;
