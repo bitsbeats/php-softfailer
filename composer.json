@@ -6,6 +6,7 @@
     "php": ">=7.2",
     "ext-json": "*",
     "ext-memcached": "*",
+    "ext-apcu": "*",
     "symfony/yaml": "^4.3",
     "ramsey/uuid": "^3.8"
   },
