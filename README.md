@@ -1,11 +1,10 @@
 # bitsbeats/php-softfailer
 
-Library to turn soft failures occurring within a certain time interval into
-hard failures, with persisting state.
+PHP library to suppress errors ("soft failures") unless they exceed a certain threshold within
+a given time interval.
 
 ## Features
-- uses persistent storage, so that failures are counted among multiple script calls
-or pageviews
+- uses persistent storage, so that failures are counted among independent script calls or pageviews
 - storage drivers for filesystem, memcache and APCu
 
 ## Install
