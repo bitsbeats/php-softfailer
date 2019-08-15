@@ -76,10 +76,16 @@ class StorageData {
 
     /**
      * @param int $expireSeconds
+     * @param DateTimeInterface|null $dtNow
+     *
      * @throws Exception
      */
-    public function expire(int $expireSeconds): void {
-        $expireTime = (new DateTime('now'))->modify('-' . $expireSeconds . 'seconds');
+    public function expire(int $expireSeconds, DateTimeInterface $dtNow = null): void {
+        if (is_null($dtNow)) {
+            $dtNow = new DateTime('now');
+        }
+
+        $expireTime = $dtNow->modify('-' . $expireSeconds . 'seconds');
         foreach($this->failPoints as $ident => $time) {
             if ($time < $expireTime) {
                 unset($this->failPoints[$ident]);
