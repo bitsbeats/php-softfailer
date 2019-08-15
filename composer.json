@@ -1,7 +1,8 @@
 {
   "name": "bitsbeats/softfailer",
+  "license": "Apache-2.0",
   "type": "library",
-  "description": "allow independent runs/instances to fail only after reaching a certain error threshold",
+  "description": "Library to suppress errors unless they exceed a certain threshold within a given time interval",
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
