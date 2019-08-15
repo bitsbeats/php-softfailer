@@ -5,10 +5,15 @@
   "require": {
     "php": ">=7.2",
     "ext-json": "*",
-    "ext-memcached": "*",
-    "ext-apcu": "*",
     "symfony/yaml": "^4.3",
     "ramsey/uuid": "^3.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.3"
+  },
+  "suggest": {
+    "ext-memcached": "Required for using the Memcached storage driver",
+    "ext-apcu": "Required for using the APCu storage driver"
   },
   "authors": [
     {
